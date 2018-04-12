@@ -211,7 +211,11 @@ export default class Profile extends Component {
                   </ListItem>
                   <Divider />
                   <ListItem>
-                    <Typography>Email: {this.state.profile.Email}</Typography>
+                    <Typography>
+                      {' '}
+                      Email:{' '}
+                      <a href="mailto:{this.state.profile.Email}">{this.state.profile.Email} </a>
+                    </Typography>
                   </ListItem>
                   <Divider />
                   <ListItem>
