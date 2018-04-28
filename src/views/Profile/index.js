@@ -19,6 +19,8 @@ import { gordonColors } from '../../theme';
 import Activities from './Components/ActivityList';
 import GordonLoader from './../../components/Loader';
 
+import DialogApp from './Components/DialogApp';
+
 export default class Profile extends Component {
   constructor(props) {
     super(props);
@@ -227,6 +229,14 @@ export default class Profile extends Component {
               <CardContent>
                 <CardHeader title="Activities" />
                 <List>{activityList}</List>
+              </CardContent>
+            </Card>
+          </Grid>
+          <Grid item xs={12} sm={12} md={6} lg={6}>
+            <Card>
+              <CardContent>
+                <CardHeader title="Office Hours" />
+                <DialogApp />
               </CardContent>
             </Card>
           </Grid>
