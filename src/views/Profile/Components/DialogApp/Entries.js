@@ -58,8 +58,8 @@ class Entries extends React.Component {
               {this.state.entries.map(row => (
                 <TableRow>
                   <TableCell>
-                    {Entries.formatAMPM(row.date, 0)}
-                    - {Entries.formatAMPM(row.date, 1)}
+                    {Entries.startt}
+                    - {Entries.endt}
                   </TableCell>
                   <TableCell>{row.day}</TableCell>
                 </TableRow>

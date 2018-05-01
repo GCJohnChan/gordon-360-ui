@@ -17,6 +17,8 @@ import Checkbox from 'material-ui/Checkbox';
 import PropTypes from 'prop-types';
 import { withStyles } from 'material-ui/styles';
 import TextField from 'material-ui/TextField';
+import Table, { TableBody, TableCell, TableHead, TableRow } from 'material-ui/Table';
+import Paper from 'material-ui/Paper';
 
 class DialogApp extends React.Component {
   constructor(props) {
@@ -27,13 +29,14 @@ class DialogApp extends React.Component {
   //Set DialogBox,checkbox intial state
   state = {
     open: false,
-    checkMon: false,
-    checkTues: false,
-    checkWeds: false,
-    checkThurs: false,
-    checkFri: false,
-    startt: '00:00',
-    endt: '00:00',
+    checkMon: null,
+    checkTues: null,
+    checkWeds: null,
+    checkThurs: null,
+    checkFri: null,
+    startt: null,
+    endt: null,
+    entries: [],
   };
 
   //DialogBox Handelers
@@ -41,8 +44,16 @@ class DialogApp extends React.Component {
     this.setState({ open: true });
   };
 
+  //Handler for closing the box. Should reset all states to null, but should we use a batch job(unstable)?
   handleClose = () => {
     this.setState({ open: false });
+    this.setState({ checkMon: null });
+    this.setState({ checkTues: null });
+    this.setState({ checkWeds: null });
+    this.setState({ checkThurs: null });
+    this.setState({ checkFri: null });
+    this.setState({ startt: null });
+    this.setState({ endt: null });
   };
 
   handlePrint = () => {
@@ -51,13 +62,58 @@ class DialogApp extends React.Component {
 
   //Checkbox Handler
   handleCheck = name => event => {
-    this.setState({ [name]: event.target.checked });
+    if (event.target.checked == false) {
+      this.setState({ [name]: (event.target.checked = null) });
+    } else {
+      switch (name) {
+        case 'checkMon':
+          this.setState({ [name]: 'M' });
+        case 'checkTues':
+          this.setState({ [name]: 'T' });
+        case 'checkWeds':
+          this.setState({ [name]: 'W' });
+        case 'checkThurs':
+          this.setState({ [name]: 'R' });
+        case 'checkFri':
+          this.setState({ [name]: 'F' });
+      }
+    }
   };
 
-  //TimePicker Handler. Pretty much same as checkbox, just pulling out value
+  //TimePicker Handler. Pretty much same as the old checkbox, just pulling out value
   handleTime = name => event => {
     this.setState({ [name]: event.target.value });
   };
+
+  //Method to push/store a set of states to entires[]
+  onAddClick = () => {
+    let entries = this.state.entries;
+    if (
+      (this.state.checkMon ||
+        this.state.checkTues ||
+        this.state.checkWeds ||
+        this.state.checkThurs ||
+        this.state.checkFri) &&
+      this.state.startt &&
+      this.state.endt
+    ) {
+      entries.push(
+        this.state.checkMon,
+        this.state.checkTues,
+        this.state.checkWeds,
+        this.state.checkThurs,
+        this.state.checkFri,
+        this.state.startt,
+        this.state.endt,
+      );
+      this.setState({
+        entries,
+      });
+    } else {
+      alert('Please select a Day and Time');
+    }
+  };
+
   render() {
     //Allows dynamic components (namely checkbox) to access states?
     const { classes } = this.props;
@@ -72,6 +128,29 @@ class DialogApp extends React.Component {
           arialabelledby="form-dialog-title"
         >
           <DialogContent>
+            <div>
+              <Paper>
+                <Table fixedHeader={this.state.fixedHeader} fixedFooter={this.state.fixedFooter}>
+                  <TableHead>
+                    <TableRow>
+                      <TableCell tooltip="Day">Day</TableCell>
+                      <TableCell tooltip="Time">Time</TableCell>
+                    </TableRow>
+                  </TableHead>
+                  <TableBody
+                    showRowHover={this.state.showRowHover}
+                    stripedRows={this.state.stripedRows}
+                  >
+                    {this.state.entries.map(row => (
+                      <TableRow>
+                        <TableCell />
+                        <TableCell />
+                      </TableRow>
+                    ))}
+                  </TableBody>
+                </Table>
+              </Paper>
+            </div>
             <tr>
               <td>
                 <FormControl component="fieldset">
@@ -160,6 +239,9 @@ class DialogApp extends React.Component {
             </tr>
           </DialogContent>
           <DialogActions>
+            <Button onClick={this.onAddClick} color="secondary">
+              Add
+            </Button>
             <Button onClick={this.handleClose} color="primary">
               Cancel
             </Button>

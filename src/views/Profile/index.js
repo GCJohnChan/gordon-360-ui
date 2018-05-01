@@ -236,6 +236,7 @@ export default class Profile extends Component {
             <Card>
               <CardContent>
                 <CardHeader title="Office Hours" />
+                wau. MWF 2:00PM-WheneverForever
                 <DialogApp />
               </CardContent>
             </Card>
