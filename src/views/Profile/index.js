@@ -33,13 +33,36 @@ export default class Profile extends Component {
       image: null,
       preview: null,
       loading: true,
+      days: '',
+      startTime: '',
+      endTime: '',
       profile: {},
       activities: [],
       files: [],
       open: false,
     };
+    this.setDays = this.setDays.bind(this);
+    this.setTime = this.setTime.bind(this);
+    this.builderOfficeHours = this.builderOfficeHours.bind(this);
   }
-
+  setDays(d) {
+    let tmp = this.state;
+    tmp.days = d;
+    this.setState(tmp);
+  }
+  setTime(key, val) {
+    let tmp = this.state;
+    tmp[key] = val;
+    this.setState(tmp);
+  }
+  builderOfficeHours() {
+    let str = 'OfficeHours:';
+    for (var i in this.state.days) {
+      let row = this.state.days[i];
+      str = str + ' ' + row.v + ' from: ' + row.start + ' To: ' + row.end + ' , ';
+    }
+    return <p>{str}</p>;
+  }
   handleExpandClick() {
     this.changePrivacy();
     user.toggleMobilePhonePrivacy();
@@ -235,8 +258,11 @@ export default class Profile extends Component {
           <Grid item xs={12} sm={12} md={6} lg={6}>
             <Card>
               <CardContent>
+                {this.builderOfficeHours()}
+                {this.state.profile.office_hours}
+                <p> </p>
                 <CardHeader title="Office Hours" />
-                <DialogApp />
+                <DialogApp setDays={this.setDays} setTime={this.setTime} />
               </CardContent>
             </Card>
           </Grid>
