@@ -19,6 +19,7 @@ import { withStyles } from 'material-ui/styles';
 import TextField from 'material-ui/TextField';
 import Table, { TableBody, TableCell, TableHead, TableRow } from 'material-ui/Table';
 import Paper from 'material-ui/Paper';
+import http from '../../../../services/http';
 
 class DialogApp extends React.Component {
   constructor(props) {
@@ -28,6 +29,8 @@ class DialogApp extends React.Component {
     this.renderInputTable = this.renderInputTable.bind(this);
     this.getCheckedValue = this.getCheckedValue.bind(this);
     this.handleCheck2 = this.handleCheck2.bind(this);
+    this.handleonsubmit = this.handleonsubmit.bind(this);
+    this.builderOfficeHours = this.builderOfficeHours.bind(this);
   }
 
   //Concatinating code Step 1: Add Dialouge Handlers
@@ -54,6 +57,7 @@ class DialogApp extends React.Component {
     FridayStartTime: '',
     FridayEndTime: '',
     entries: [],
+    days: [],
   };
 
   //DialogBox Handelers
@@ -140,6 +144,7 @@ class DialogApp extends React.Component {
   //Method to push/store a set of states to entires[]
   onAddClick = () => {
     let entries = this.state.entries;
+    let days = this.state.days;
     if (
       (this.state.checkMon ||
         this.state.checkTues ||
@@ -185,6 +190,11 @@ class DialogApp extends React.Component {
         entries,
       });
 
+      days.push(o);
+      this.setState({
+        days,
+      });
+
       let state = this.state;
       state.checkMon = null;
       state.checkTues = null;
@@ -200,6 +210,9 @@ class DialogApp extends React.Component {
       this.props.setDays(entries);
       this.props.setTime('startTime', this.state.startTime);
       this.props.setTime('endTime', this.state.endTime);
+      let tmp = this.state;
+      tmp.days = entries;
+      this.setState(tmp);
     } else {
       alert('Please select a Day and Time');
     }
@@ -219,6 +232,38 @@ class DialogApp extends React.Component {
 
     tmp.entries = ls;
     this.setState(tmp);
+  }
+
+  //Submit to make Api call....................To the back End..................
+  handleonsubmit(event) {
+    event.preventDefault();
+
+    let data = this.builderOfficeHours();
+    console.log('tessting1 ', this.state);
+    console.log('tessting2 ', this.builderOfficeHours());
+    return http.put('/profiles/office_hours', data);
+  }
+
+  //account_id form cct.dbo.account_profile,
+  //gordon_id from account
+  /**
+ * Edit office hours 
+ * @param {String} buildOficeHours office_hours 
+ * @param {Object} data Data passed in
+ * @return {Promise.<Object>} Response body
+ 
+  * editOffice_hours = (data) => {
+ * return http.put('profiles/office_hours',data);
+*};
+/** */
+
+  builderOfficeHours() {
+    let str = 'OfficeHours:';
+    for (var i in this.state.days) {
+      let row = this.state.days[i];
+      str = str + ' ' + row.v + ' from: ' + row.start + ' To: ' + row.end + ' , ';
+    }
+    return str;
   }
   //arrays of labels Monday, Tuesday , Wednesday, Thursday and Friday.
   renderInputTable() {
@@ -283,6 +328,7 @@ class DialogApp extends React.Component {
   getCheckedValue(key) {}
   render() {
     //Allows dynamic components (namely checkbox) to access states?
+
     const { classes } = this.props;
     return (
       <div>
@@ -435,7 +481,7 @@ class DialogApp extends React.Component {
               Add
             </Button>
 
-            <Button onClick={this.handleClose} color="primary" autoFocus>
+            <Button onClick={this.handleonsubmit} color="primary" autoFocus>
               Submit
             </Button>
           </DialogActions>

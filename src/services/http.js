@@ -45,17 +45,20 @@ const createRequest = (url, method, body) =>
  * @return {Promise.<Object|Array|String|Number>} Resolves with response body; rejects on non-2xx
  * response code
  */
+
 export const parseResponse = res => {
+  console.log('response Api ', res.body);
+  // Handle error when response body is valid but status code is not
+  if (!res.ok) {
+    return json.then(data => Promise.reject(createError(data, res)));
+  }
   // Attempt to parse body of response
+
   const json = res
     .json()
     // Handle error if response body is not valid JSON
     .catch(err => Promise.reject(createError(err, res)));
 
-  // Handle error when response body is valid but status code is not
-  if (!res.ok) {
-    return json.then(data => Promise.reject(createError(data, res)));
-  }
   return json;
 };
 

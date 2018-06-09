@@ -259,7 +259,7 @@ export default class Profile extends Component {
             <Card>
               <CardContent>
                 {this.builderOfficeHours()}
-                {this.state.profile.office_hours}
+                {this.state.profile.HomeCity}
                 <p> </p>
                 <CardHeader title="Office Hours" />
                 <DialogApp setDays={this.setDays} setTime={this.setTime} />
