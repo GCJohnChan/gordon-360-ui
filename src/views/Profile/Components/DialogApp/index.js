@@ -237,10 +237,7 @@ class DialogApp extends React.Component {
   //Submit to make Api call....................To the back End..................
   handleonsubmit(event) {
     event.preventDefault();
-
     let data = this.builderOfficeHours();
-    console.log('tessting1 ', this.state);
-    console.log('tessting2 ', this.builderOfficeHours());
     return http.put('/profiles/office_hours', data);
   }
 
