@@ -57,7 +57,7 @@ class DialogApp extends React.Component {
     FridayStartTime: '',
     FridayEndTime: '',
     entries: [],
-    days: [],
+    //days: [],
   };
 
   //DialogBox Handelers
@@ -189,11 +189,12 @@ class DialogApp extends React.Component {
       this.setState({
         entries,
       });
-
+      /*
       days.push(o);
       this.setState({
         days,
       });
+      */
 
       let state = this.state;
       state.checkMon = null;
@@ -235,12 +236,13 @@ class DialogApp extends React.Component {
   }
 
   //Submit to make Api call....................To the back End..................
+
   handleonsubmit(event) {
     event.preventDefault();
     let data = this.builderOfficeHours();
-    return http.put('/profiles/office_hours', data);
+    return http.put('profiles/office_hours', data);
   }
-
+  // return http.put
   //account_id form cct.dbo.account_profile,
   //gordon_id from account
   /**
@@ -487,5 +489,4 @@ class DialogApp extends React.Component {
     );
   }
 }
-
 export default DialogApp;
