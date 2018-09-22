@@ -233,6 +233,25 @@ class DialogApp extends React.Component {
 
     tmp.entries = ls;
     this.setState(tmp);
+
+    let ls2 = [];
+    for (let i in this.state.days) {
+      let day = this.state.days[i];
+      if (dayIn !== day.v) {
+        ls2.push(day);
+      }
+    }
+
+    tmp = this.state;
+    tmp.days = ls2;
+    this.setState(tmp);
+
+    this.props.setDays(this.state.days);
+    console.log('-->Days> ', this.state.days);
+
+    let data = this.builderOfficeHours();
+    //http PUT profiles/ofice_hours isn't implemented yet, so just log
+    console.log('/profiles/office_hours', data);
   }
 
   //Submit to make Api call....................To the back End..................
@@ -240,7 +259,8 @@ class DialogApp extends React.Component {
   handleonsubmit(event) {
     event.preventDefault();
     let data = this.builderOfficeHours();
-    return http.put('profiles/office_hours', data);
+    //http PUT profiles/ofice_hours isn't implemented yet, so just log
+    console.log('/profiles/office_hours', data);
   }
   // return http.put
   //account_id form cct.dbo.account_profile,
