@@ -247,11 +247,7 @@ class DialogApp extends React.Component {
     this.setState(tmp);
 
     this.props.setDays(this.state.days);
-    console.log('-->Days> ', this.state.days);
-
-    let data = this.builderOfficeHours();
-    //http PUT profiles/ofice_hours isn't implemented yet, so just log
-    console.log('/profiles/office_hours', data);
+    //console.log('-->Days> ', this.state.days);
   }
 
   //Submit to make Api call....................To the back End..................
@@ -262,19 +258,6 @@ class DialogApp extends React.Component {
     //http PUT profiles/ofice_hours isn't implemented yet, so just log
     console.log('/profiles/office_hours', data);
   }
-  // return http.put
-  //account_id form cct.dbo.account_profile,
-  //gordon_id from account
-  /**
- * Edit office hours 
- * @param {String} buildOficeHours office_hours 
- * @param {Object} data Data passed in
- * @return {Promise.<Object>} Response body
- 
-  * editOffice_hours = (data) => {
- * return http.put('profiles/office_hours',data);
-*};
-/** */
 
   builderOfficeHours() {
     let str = 'OfficeHours:';
