@@ -19,7 +19,7 @@ import { withStyles } from 'material-ui/styles';
 import TextField from 'material-ui/TextField';
 import Table, { TableBody, TableCell, TableHead, TableRow } from 'material-ui/Table';
 import Paper from 'material-ui/Paper';
-import http from '../../../../services/http';
+//import http from '../../../../services/http';
 
 class DialogApp extends React.Component {
   constructor(props) {
@@ -159,33 +159,32 @@ class DialogApp extends React.Component {
       let v = '';
       if (this.state.checkMon !== null) {
         console.log("I'm checkMon >  ", this.state.checkMon);
-        v = v + this.state.checkMon + '-';
+        v = v + this.state.checkMon;
         //entries.push(this.state.checkMon );
       }
       if (this.state.checkTues !== null) {
-        v = v + this.state.checkTues + '-';
+        v = v + this.state.checkTues;
         //entries.push(this.state.checkTues );
       }
       if (this.state.checkWeds !== null) {
-        v = v + this.state.checkWeds + '-';
+        v = v + this.state.checkWeds;
         //entries.push(this.state.checkWeds );
       }
       if (this.state.checkThurs !== null) {
-        v = v + this.state.checkThurs + ' - ';
+        v = v + this.state.checkThurs;
         //entries.push(this.state.checkThurs );
       }
       if (this.state.checkFri !== null) {
-        v = v + this.state.checkFri + ' - ';
+        v = v + this.state.checkFri;
         //entries.push(this.state.checkFri );
-        v = v.trim('-');
       }
 
-      let o = {
+      let obj = {
         v: v,
         start: this.state.startTime,
         end: this.state.endTime,
       };
-      entries.push(o);
+      entries.push(obj);
       this.setState({
         entries,
       });
@@ -247,17 +246,38 @@ class DialogApp extends React.Component {
     this.setState(tmp);
 
     this.props.setDays(this.state.days);
-    //console.log('-->Days> ', this.state.days);
+    console.log('-->Days> ', this.state.days);
   }
 
   //Submit to make Api call....................To the back End..................
 
   handleonsubmit(event) {
+    // if(event.)
     event.preventDefault();
     let data = this.builderOfficeHours();
     //http PUT profiles/ofice_hours isn't implemented yet, so just log
     console.log('/profiles/office_hours', data);
   }
+
+  // return http.put
+  //account_id form cct.dbo.account_profile,
+  //gordon_id from account
+  /**
+ * Edit office hours 
+ * @param {String} buildOficeHours office_hours 
+ * @param {Object} data Data passed in
+ * @return {Promise.<Object>} Response body
+ 
+  * editOffice_hours = (data) => {
+ * return http.put('profiles/office_hours',data);
+*};
+/** 
+ *  
+
+             <Button onClick={this.handleonsubmit} onClick={this.handleClose} color="primary"  autoFocus>
+              Submit
+            </Button>
+*/
 
   builderOfficeHours() {
     let str = 'OfficeHours:';
@@ -344,6 +364,9 @@ class DialogApp extends React.Component {
         >
           <DialogContent>
             <div>
+              <Button align="right" onClick={this.handleClose} color="secondary">
+                X
+              </Button>
               <Paper>
                 <Table fixedHeader={this.state.fixedHeader} fixedFooter={this.state.fixedFooter}>
                   <TableHead>
@@ -352,6 +375,7 @@ class DialogApp extends React.Component {
                       <TableCell tooltip="Time">Time</TableCell>
                     </TableRow>
                   </TableHead>
+
                   <TableBody
                     showRowHover={this.state.showRowHover}
                     stripedRows={this.state.stripedRows}
@@ -471,22 +495,14 @@ class DialogApp extends React.Component {
                       step: 300, // 5 min
                     }}
                   />
+                  <Button onClick={this.onAddClick} color="primary">
+                    Add
+                  </Button>
                 </form>
               </td>
             </tr>
           </DialogContent>
-          <DialogActions>
-            <Button onClick={this.handleClose} color="secondary">
-              Cancel
-            </Button>
-            <Button onClick={this.onAddClick} color="primary">
-              Add
-            </Button>
-
-            <Button onClick={this.handleonsubmit} color="primary" autoFocus>
-              Submit
-            </Button>
-          </DialogActions>
+          <DialogActions />
         </Dialog>
       </div>
     );
