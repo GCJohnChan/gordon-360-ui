@@ -31,6 +31,7 @@ class DialogApp extends React.Component {
     this.handleCheck2 = this.handleCheck2.bind(this);
     this.handleonsubmit = this.handleonsubmit.bind(this);
     this.builderOfficeHours = this.builderOfficeHours.bind(this);
+    this.onAddClick = this.onAddClick.bind(this);
   }
 
   //Concatinating code Step 1: Add Dialouge Handlers
@@ -362,11 +363,18 @@ class DialogApp extends React.Component {
           onClose={this.handleClose}
           arialabelledby="form-dialog-title"
         >
+          <div style={{ width: '100%' }}>
+            <Button
+              style={{ float: 'right', marginRight: '5px', width: 5 }}
+              align="right"
+              onClick={this.handleClose}
+              color="secondary"
+            >
+              X
+            </Button>
+          </div>
           <DialogContent>
             <div>
-              <Button align="right" onClick={this.handleClose} color="secondary">
-                X
-              </Button>
               <Paper>
                 <Table fixedHeader={this.state.fixedHeader} fixedFooter={this.state.fixedFooter}>
                   <TableHead>
