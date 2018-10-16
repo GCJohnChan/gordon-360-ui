@@ -58,7 +58,6 @@ class DialogApp extends React.Component {
     FridayStartTime: '',
     FridayEndTime: '',
     entries: [],
-    //days: [],
   };
 
   //DialogBox Handelers
@@ -83,13 +82,11 @@ class DialogApp extends React.Component {
   };
 
   //Checkbox Handler
-  handleCheck2(e, boo, eee) {
+  handleCheck2(e, boo) {
     let el = e.target;
     let name = el.name;
 
     let tmp = this.state;
-
-    console.log('Before 2---> ', el, ' > ', boo, eee, name, tmp);
 
     if (name === 'checkMon') {
       if (boo) {
@@ -127,22 +124,15 @@ class DialogApp extends React.Component {
         tmp.checkFri = null;
       }
     }
-
-    console.log('After---> ', tmp);
     this.setState(tmp);
   }
-
   handleTime2 = e => {
     let val = e.target.value;
     let name = e.target.name;
-    console.log('Start Time --> ', name, val);
     let tmp = this.state;
     tmp[name] = val;
     this.setState(tmp);
-    // this.setState({ [name]: event.target.value });
   };
-
-  //Method to push/store a set of states to entires[]
   onAddClick = () => {
     let entries = this.state.entries;
     let days = this.state.days;
@@ -155,33 +145,25 @@ class DialogApp extends React.Component {
       this.state.startTime &&
       this.state.endTime
     ) {
-      console.log('B-=-=> ', this.state);
-
-      let v = '';
+      let val1 = '';
       if (this.state.checkMon !== null) {
-        console.log("I'm checkMon >  ", this.state.checkMon);
-        v = v + this.state.checkMon;
-        //entries.push(this.state.checkMon );
+        val1 = val1 + this.state.checkMon;
       }
       if (this.state.checkTues !== null) {
-        v = v + this.state.checkTues;
-        //entries.push(this.state.checkTues );
+        val1 = val1 + this.state.checkTues;
       }
       if (this.state.checkWeds !== null) {
-        v = v + this.state.checkWeds;
-        //entries.push(this.state.checkWeds );
+        val1 = val1 + this.state.checkWeds;
       }
       if (this.state.checkThurs !== null) {
-        v = v + this.state.checkThurs;
-        //entries.push(this.state.checkThurs );
+        val1 = val1 + this.state.checkThurs;
       }
       if (this.state.checkFri !== null) {
-        v = v + this.state.checkFri;
-        //entries.push(this.state.checkFri );
+        val1 = val1 + this.state.checkFri;
       }
 
       let obj = {
-        v: v,
+        val1: val1,
         start: this.state.startTime,
         end: this.state.endTime,
       };
@@ -189,12 +171,6 @@ class DialogApp extends React.Component {
       this.setState({
         entries,
       });
-      /*
-      days.push(o);
-      this.setState({
-        days,
-      });
-      */
 
       let state = this.state;
       state.checkMon = null;
@@ -203,9 +179,6 @@ class DialogApp extends React.Component {
       state.checkThurs = null;
       state.checkFri = null;
       this.setState(state);
-
-      console.log('-=-=> ', this.state);
-
       //  setDays={this.setDays} setTime={this.setTime}
 
       this.props.setDays(entries);
@@ -226,7 +199,7 @@ class DialogApp extends React.Component {
 
     for (let i in rows) {
       let day = rows[i];
-      if (dayIn !== day.v) {
+      if (dayIn !== day.val1) {
         ls.push(day);
       }
     }
@@ -237,7 +210,7 @@ class DialogApp extends React.Component {
     let ls2 = [];
     for (let i in this.state.days) {
       let day = this.state.days[i];
-      if (dayIn !== day.v) {
+      if (dayIn !== day.val1) {
         ls2.push(day);
       }
     }
@@ -253,16 +226,12 @@ class DialogApp extends React.Component {
   //Submit to make Api call....................To the back End..................
 
   handleonsubmit(event) {
-    // if(event.)
     event.preventDefault();
     let data = this.builderOfficeHours();
     //http PUT profiles/ofice_hours isn't implemented yet, so just log
     console.log('/profiles/office_hours', data);
   }
 
-  // return http.put
-  //account_id form cct.dbo.account_profile,
-  //gordon_id from account
   /**
  * Edit office hours 
  * @param {String} buildOficeHours office_hours 
@@ -272,9 +241,6 @@ class DialogApp extends React.Component {
   * editOffice_hours = (data) => {
  * return http.put('profiles/office_hours',data);
 *};
-/** 
- *  
-
              <Button onClick={this.handleonsubmit} onClick={this.handleClose} color="primary"  autoFocus>
               Submit
             </Button>
@@ -284,7 +250,7 @@ class DialogApp extends React.Component {
     let str = 'OfficeHours:';
     for (var i in this.state.days) {
       let row = this.state.days[i];
-      str = str + ' ' + row.v + ' from: ' + row.start + ' To: ' + row.end + ' , ';
+      str = str + ' ' + row.val1 + ' from: ' + row.start + ' To: ' + row.end + ' , ';
     }
     return str;
   }
@@ -391,7 +357,7 @@ class DialogApp extends React.Component {
                     {this.state.entries.map(row => {
                       return (
                         <TableRow>
-                          <TableCell> {row.v} </TableCell>
+                          <TableCell> {row.val1} </TableCell>
                           <TableCell>
                             {row.start} &nbsp;&nbsp;{row.end}
                           </TableCell>
@@ -399,7 +365,7 @@ class DialogApp extends React.Component {
                             {' '}
                             <a
                               onClick={() => {
-                                this.deleteRow(row.v);
+                                this.deleteRow(row.val1);
                               }}
                               style={{ cursor: 'pointer' }}
                             >
